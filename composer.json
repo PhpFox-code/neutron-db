@@ -1,6 +1,6 @@
 {
   "name": "codelego/phpfox-db",
-  "description": "PhpFox Database Component",
+  "description": "Database library for phpfox framework.",
   "type": "library",
   "license":"MIT",
   "authors": [
@@ -11,6 +11,11 @@
   ],
   "minimum-stability": "dev",
   "autoload": {
+    "psr-4": {
+      "Phpfox\\Db\\": "src/"
+    }
+  },
+  "autoload-dev": {
     "psr-4": {
       "Phpfox\\Db\\": "src/"
     }
