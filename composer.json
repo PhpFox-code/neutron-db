@@ -2,6 +2,7 @@
   "name": "codelego/phpfox-db",
   "description": "PhpFox Database Component",
   "type": "library",
+  "license":"MIT",
   "authors": [
     {
       "name": "Nam Nguyen",
