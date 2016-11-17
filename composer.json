@@ -2,7 +2,7 @@
   "name": "codelego/phpfox-db",
   "description": "Database library for phpfox framework.",
   "type": "library",
-  "license":"MIT",
+  "license": "MIT",
   "authors": [
     {
       "name": "Nam Nguyen",
@@ -17,7 +17,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Phpfox\\Db\\": "src/"
+      "Phpfox\\Db\\": "test/"
     }
   },
   "require": {}

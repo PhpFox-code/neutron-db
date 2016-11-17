@@ -1,23 +1,24 @@
 <?php
-
 namespace Phpfox\Db;
 
-
+/**
+ * Class SqlLiteral
+ *
+ * @package Phpfox\Db
+ */
 class SqlLiteral
 {
     /**
      * @var string
      */
-    protected $literal = '';
+    private $literal;
 
     /**
-     * SqlLiteral constructor.
-     *
-     * @param $literal
+     * @param $string
      */
-    public function __construct($literal)
+    public function __construct($string)
     {
-
+        $this->literal = (string)$string;
     }
 
     /**
@@ -35,4 +36,5 @@ class SqlLiteral
     {
         $this->literal = $literal;
     }
+
 }

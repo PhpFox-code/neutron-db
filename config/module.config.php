@@ -3,6 +3,7 @@
 namespace Phpfox\Db;
 
 return [
-    'aliases'   => [],
-    'factories' => [],
+    'db_drivers' => [
+        'mysqli' => MysqliAdapter::class,
+    ],
 ];
