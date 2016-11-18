@@ -228,7 +228,7 @@ class SqlSelect
 
     public function paging($page, $limit)
     {
-        return \app()->paging()->factory($this)->paging($page, $limit);
+        return service('paging')->factory($this)->paging($page, $limit);
     }
 
     /**

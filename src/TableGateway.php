@@ -42,7 +42,6 @@ class TableGateway
 
     public function __construct()
     {
-
     }
 
     /**

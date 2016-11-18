@@ -109,6 +109,6 @@ class SqlDelete
         $where = empty($this->sqlCondition) ? ''
             : ' WHERE ' . $this->sqlCondition->prepare();
 
-        return 'DELETE FROM ' . $this->table . $where;
+        return 'delete ' . 'from' . $this->table . $where;
     }
 }
