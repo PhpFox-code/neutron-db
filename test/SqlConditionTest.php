@@ -14,17 +14,6 @@ use PHPUnit_Framework_TestCase;
 class SqlConditionTest extends PHPUnit_Framework_TestCase
 {
 
-    public function getAdapter()
-    {
-        return new DbAdapter([
-            'host'     => '127.0.0.1',
-            'port'     => 33306,
-            'username' => 'root',
-            'password' => 'namnv123',
-            'database' => 'phpfox_unitest',
-        ]);
-    }
-
     public function testTransaction()
     {
         $adapter = $this->getAdapter();
@@ -48,6 +37,17 @@ class SqlConditionTest extends PHPUnit_Framework_TestCase
         $conn->rollback();
 
         $this->assertFalse($conn->isInTransaction());
+    }
+
+    public function getAdapter()
+    {
+        return new DbAdapter([
+            'host'     => '127.0.0.1',
+            'port'     => 33306,
+            'username' => 'root',
+            'password' => 'namnv123',
+            'database' => 'phpfox_unitest',
+        ]);
     }
 
     public function testSqlSelect()

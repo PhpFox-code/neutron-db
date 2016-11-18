@@ -40,17 +40,17 @@ class TableGateway
      */
     protected $defaultValue = [];
 
+    public function __construct()
+    {
+
+    }
+
     /**
      * @return string|false
      */
     public function getIdentity()
     {
         return $this->identity;
-    }
-
-    public function __construct()
-    {
-
     }
 
     /**
@@ -62,20 +62,6 @@ class TableGateway
     {
         return (new SqlInsert($this->_adapter()))->insert($this->getName(),
             array_intersect_key($data, $this->getColumn()))->execute();
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return mixed
-     */
-    public function insertIgnore($data)
-    {
-        $sql = (new SqlInsert($this->_adapter()))->insert($this->getName(),
-            array_intersect_key($data, $this->getColumn()))
-            ->ignoreOnDuplicate(true);
-
-        return $sql->execute();
     }
 
     /**
@@ -100,6 +86,20 @@ class TableGateway
     public function getColumn()
     {
         return $this->column;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return mixed
+     */
+    public function insertIgnore($data)
+    {
+        $sql = (new SqlInsert($this->_adapter()))->insert($this->getName(),
+            array_intersect_key($data, $this->getColumn()))
+            ->ignoreOnDuplicate(true);
+
+        return $sql->execute();
     }
 
     /**
@@ -142,14 +142,6 @@ class TableGateway
     }
 
     /**
-     * @return array
-     */
-    public function getColumnNotPrimary()
-    {
-        return array_diff_key($this->column, $this->primary);
-    }
-
-    /**
      * @param array $data
      * @param array $values
      *
@@ -176,6 +168,14 @@ class TableGateway
         }
 
         return $query->execute();
+    }
+
+    /**
+     * @return array
+     */
+    public function getColumnNotPrimary()
+    {
+        return array_diff_key($this->column, $this->primary);
     }
 
     /**
@@ -236,15 +236,5 @@ class TableGateway
     public function delete()
     {
         return (new SqlDelete($this->_adapter()))->from($this->getName());
-    }
-
-    /**
-     * @param array $value
-     *
-     * @return array
-     */
-    public function findByIdList($value)
-    {
-
     }
 }

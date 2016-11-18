@@ -32,9 +32,11 @@ class SqlInsert
     protected $_delay = false;
 
     /**
-     * @param AdapterInterface $adapter
+     * SqlInsert constructor.
+     *
+     * @param $adapter
      */
-    public function __construct(AdapterInterface $adapter)
+    public function __construct($adapter)
     {
         $this->adapter = $adapter;
     }

@@ -104,23 +104,9 @@ interface AdapterInterface
     public function getErrorCode($master = true);
 
     /**
-     * @param $table
-     *
-     * @return string
-     */
-    public function getCreateTableSql($table);
-
-    /**
-     * @param string $table
-     *
-     * @return array
-     */
-    public function describe($table);
-
-    /**
      * @return mixed
      */
-    public function startTransaction();
+    public function begin();
 
     /**
      * commit transaction

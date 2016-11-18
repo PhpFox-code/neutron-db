@@ -34,9 +34,9 @@ class SqlUpdate
     /**
      * SqlUpdate constructor.
      *
-     * @param AdapterInterface $adapter
+     * @param mixed $adapter
      */
-    public function __construct(AdapterInterface $adapter)
+    public function __construct($adapter)
     {
         $this->adapter = $adapter;
     }

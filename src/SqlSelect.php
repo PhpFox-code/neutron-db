@@ -88,11 +88,11 @@ class SqlSelect
     /**
      * @ignore
      *
-     * @param AdapterInterface $connection
+     * @param mixed $adapter
      */
-    public function __construct(AdapterInterface $connection)
+    public function __construct($adapter)
     {
-        $this->adapter = $connection;
+        $this->adapter = $adapter;
     }
 
     /**

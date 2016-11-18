@@ -25,9 +25,11 @@ class SqlDelete
     protected $sqlCondition = null;
 
     /**
-     * @param AdapterInterface $adapter
+     * SqlDelete constructor.
+     *
+     * @param $adapter
      */
-    public function __construct(AdapterInterface $adapter)
+    public function __construct($adapter)
     {
         $this->adapter = $adapter;
     }

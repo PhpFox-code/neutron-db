@@ -23,9 +23,9 @@ class SqlJoin
     /**
      * SqlJoin constructor.
      *
-     * @param AdapterInterface $adapter
+     * @param mixed $adapter
      */
-    public function __construct(AdapterInterface $adapter)
+    public function __construct($adapter)
     {
         $this->adapter = $adapter;
     }
@@ -54,8 +54,8 @@ class SqlJoin
             if (is_array($value)) {
                 $condition = strtr($expression, $this->quoteArray($value));
             } else {
-                $condition = str_replace('?', $this->adapter->quoteValue($value),
-                    $expression);
+                $condition = str_replace('?',
+                    $this->adapter->quoteValue($value), $expression);
             }
         }
 
