@@ -4,4 +4,30 @@ Database Table Gateway
 >
 > A Table Data Gateway holds all the SQL for accessing a single table or view: selects, inserts, updates, and deletes. Other code calls its methods for all interaction with the database.
 
-![alt text]: (http://martinfowler.com/eaaCatalog/dbgateTable.gif "Db Table Gateway")
+![Pattern]:(http://martinfowler.com/eaaCatalog/dbgateTable.gif)
+
+
+### Configuration
+
+In module.config.php
+
+```php
+return [
+    'tables'=>[
+        'user' => [
+               `User\Model\UserTable`,
+               'User\Model\User',
+               ':user'
+        ],
+    ]
+];
+```
+
+In service
+
+```php
+$user = $serviceManager->get('tables')
+        ->get('user')
+        ->findById(1);
+var_export(user);
+```

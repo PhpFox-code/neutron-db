@@ -7,26 +7,35 @@ interface GatewayManagerInterface
     /**
      * Get a table gateway is associated with key name.
      *
-     * @param  string $id
+     * @param  string $alias
      *
      * @return TableGatewayInterface
      * @throws GatewayException
      */
-    public function get($id);
+    public function get($alias);
 
     /**
-     * @param  string $id
+     * @param  string $alias
      *
      * @return TableGatewayInterface
      * @throws GatewayException
      */
-    public function build($id);
+    public function build($alias);
 
     /**
-     * @param string                $id
+     * @param string                $alias
      * @param TableGatewayInterface $gateway
      *
      * @return $this
      */
-    public function set($id, TableGatewayInterface $gateway);
+    public function set($alias, TableGatewayInterface $gateway);
+
+    /**
+     * @param string $alias
+     * @param mixed  $id
+     *
+     * @return mixed|ModelInterface
+     * @throws GatewayException
+     */
+    public function findById($alias, $id);
 }

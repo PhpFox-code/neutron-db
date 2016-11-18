@@ -9,4 +9,11 @@ namespace Phpfox\Db;
  */
 interface TableGatewayInterface
 {
+    /**
+     * @param mixed $id
+     *
+     * @return mixed
+     * @throws GatewayException
+     */
+    public function findById($id);
 }

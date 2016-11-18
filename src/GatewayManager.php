@@ -15,29 +15,41 @@ class GatewayManager implements GatewayManagerInterface
     protected $map = [];
 
     /**
-     * @param string $id
+     * @param string $alias
      *
      * @return TableGatewayInterface
      */
-    public function get($id)
+    public function get($alias)
     {
-        return isset($this->tables[$id]) ? $this->tables[$id]
-            : $this->tables[$id] = $this->build($id);
+        return isset($this->tables[$alias]) ? $this->tables[$alias]
+            : $this->tables[$alias] = $this->build($alias);
     }
 
-    public function build($id)
+    public function build($alias)
     {
-        if (!isset($this->map[$id]) || !class_exists($this->map[$id])) {
-            throw new GatewayException("gateway ($id) does not exists");
+        if (!isset($this->map[$alias])
+            || !class_exists($this->map[$alias][0])
+        ) {
+            throw new GatewayException("gateway `$alias` does not exists");
         }
 
+        list($table, $model, $name) = $this->map[$alias];
 
-        return new ($this->map[$id])();
+        if (!class_exists($table) || !class_exists($model)) {
+            throw new GatewayException("gateway `$alias` does not exists");
+        }
+
+        return new $table($name, $model);
     }
 
-    public function set($id, TableGatewayInterface $gateway)
+    public function set($alias, TableGatewayInterface $gateway)
     {
-        $this->tables[$id] = $gateway;
+        $this->tables[$alias] = $gateway;
         return $this;
+    }
+
+    public function findById($alias, $id)
+    {
+        return $this->get($alias)->findById($id);
     }
 }
