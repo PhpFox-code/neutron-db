@@ -19,17 +19,17 @@ class SqlUpdate
     /**
      * @var string
      */
-    protected $_tableName;
+    protected $table;
 
     /**
      * @var array
      */
-    protected $_data = [];
+    protected $data = [];
 
     /**
      * @var SqlCondition
      */
-    protected $_where = null;
+    protected $sqlCondition = null;
 
     /**
      * SqlUpdate constructor.
@@ -43,15 +43,23 @@ class SqlUpdate
 
     /**
      * @param string $tableName
-     * @param array  $data
      *
      * @return $this
      */
-    public function update($tableName, $data)
+    public function update($tableName)
     {
-        $this->_tableName = $tableName;
-        $this->_data = $data;
+        $this->table = $tableName;
+        return $this;
+    }
 
+    /**
+     * @param array $data
+     *
+     * @return $this
+     */
+    public function values($data)
+    {
+        $this->data = $data;
         return $this;
     }
 
@@ -63,11 +71,11 @@ class SqlUpdate
      */
     public function where($expression, $data = null)
     {
-        if (null == $this->_where) {
-            $this->_where = new SqlCondition($this->adapter);
+        if (null == $this->sqlCondition) {
+            $this->sqlCondition = new SqlCondition($this->adapter);
         }
 
-        $this->_where->where($expression, $data);
+        $this->sqlCondition->where($expression, $data);
 
         return $this;
     }
@@ -80,11 +88,11 @@ class SqlUpdate
      */
     public function orWhere($expression, $data = null)
     {
-        if (null == $this->_where) {
-            $this->_where = new SqlCondition($this->adapter);
+        if (null == $this->sqlCondition) {
+            $this->sqlCondition = new SqlCondition($this->adapter);
         }
 
-        $this->_where->orWhere($expression, $data);
+        $this->sqlCondition->orWhere($expression, $data);
 
         return $this;
     }
@@ -101,11 +109,11 @@ class SqlUpdate
             $sql = $this->prepare();
         }
 
-        $result = $this->adapter->exec($sql);
+        $result = $this->adapter->execute($sql);
 
 
         if (false === $result) {
-            throw new DbException($sql . $this->adapter->getErrorMessage());
+            throw new DbException($sql . $this->adapter->error());
         }
 
         return $result;
@@ -119,14 +127,14 @@ class SqlUpdate
 
         $array = [];
 
-        foreach ($this->_data as $key => $value) {
+        foreach ($this->data as $key => $value) {
             $array [] = $key . '=' . $this->adapter->quoteValue($value);
         }
 
-        $where = empty($this->_where) ? ''
-            : ' WHERE ' . $this->_where->prepare();
+        $where = empty($this->sqlCondition) ? ''
+            : ' WHERE ' . $this->sqlCondition->prepare();
 
-        return 'UPDATE ' . $this->_tableName . ' SET ' . implode(', ', $array)
+        return 'UPDATE ' . $this->table . ' SET ' . implode(', ', $array)
         . $where;
     }
 }

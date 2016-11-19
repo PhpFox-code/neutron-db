@@ -37,4 +37,9 @@ class SqlLiteral
         $this->literal = $literal;
     }
 
+    public function __toString()
+    {
+        return $this->literal;
+    }
+
 }

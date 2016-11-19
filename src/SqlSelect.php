@@ -133,7 +133,7 @@ class SqlSelect
         }
 
         if (!is_null($columns)) {
-            $this->columns($columns);
+            $this->select($columns);
         }
 
         return $this;
@@ -144,7 +144,29 @@ class SqlSelect
      *
      * @return $this
      */
-    public function columns($columns)
+    public function select($columns)
+    {
+        $this->_columns = [];
+        
+        if (is_string($columns)) {
+            $this->_columns [] = $columns;
+        } else {
+            if (is_array($columns)) {
+                foreach ($columns as $col) {
+                    $this->_columns[] = $col;
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param array|string $columns
+     *
+     * @return $this
+     */
+    public function andSelect($columns)
     {
         if (is_string($columns)) {
             $this->_columns [] = $columns;
@@ -275,7 +297,7 @@ class SqlSelect
         $this->_join->join(self::JOIN, $table, $alias, $expression, $data);
 
         if (null != $columns) {
-            $this->columns($columns);
+            $this->select($columns);
         }
 
         return $this;
@@ -304,7 +326,7 @@ class SqlSelect
         $this->_join->join(self::LEFT_JOIN, $table, $alias, $expression, $data);
 
         if (null != $columns) {
-            $this->columns($columns);
+            $this->select($columns);
         }
 
         return $this;
@@ -328,7 +350,7 @@ class SqlSelect
         $this->_join->join(self::LEFT_JOIN, $table, $alias, $expression, $data);
 
         if (null != $columns) {
-            $this->columns($columns);
+            $this->select($columns);
         }
 
         return $this;
@@ -375,7 +397,7 @@ class SqlSelect
             $sql = $this->prepareCount();
         }
 
-        $result = $this->adapter->query($sql, $this->_useMaster);
+        $result = $this->adapter->execute($sql, $this->_useMaster);
 
         return $result->getInt(self::COUNT_NAME);
     }
@@ -408,7 +430,7 @@ class SqlSelect
             $sql = $this->prepare();
         }
 
-        $result = $this->adapter->query($sql, $this->_useMaster);
+        $result = $this->adapter->execute($sql, $this->_useMaster);
 
         return $result;
     }

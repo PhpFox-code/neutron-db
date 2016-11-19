@@ -92,10 +92,10 @@ class SqlDelete
             $sql = $this->prepare();
         }
 
-        $result = $this->adapter->exec($sql);
+        $result = $this->adapter->execute($sql);
 
         if (false === $result) {
-            throw new SqlException($this->adapter->getErrorMessage());
+            throw new SqlException($this->adapter->error());
         }
 
         return $result;

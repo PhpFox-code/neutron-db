@@ -38,38 +38,42 @@ class SqlCondition
     public function where($expression, $value = null)
     {
         $this->_where(' AND ', $expression, $value);
-
         return $this;
     }
 
+
     /**
      * @param      $type
-     * @param      $expression
+     * @param      $statement
      * @param null $value
      *
      * @return $this
      */
-    protected function _where($type, $expression, $value = null)
+    protected function _where($type, $statement, $value = null)
     {
-        $str = null;
-
-        if (is_null($value)) {
-            $str = str_replace('?', 'NULL', $expression);
-        } else {
-            if (is_array($value)) {
-                $str = strtr($expression, $this->quoteArray($value));
-            } else {
-                if ($value instanceof SqlLiteral) {
-                    $str = $value->getLiteral();
-                } else {
-                    $str = str_replace('?', $this->adapter->quoteValue($value),
-                        $expression);
-                }
+        if (is_array($statement)) {
+            foreach ($statement as $k => $v) {
+                $this->_where($type, $k, $v);
             }
+        } elseif (is_null($value)) {
+            $this->elements [] = [
+                $type,
+                str_replace('?', 'NULL', $statement),
+            ];
+        } elseif (is_array($value)) {
+            $this->elements [] = [
+                $type,
+                strtr($statement, $this->quoteArray($value)),
+            ];
+        } elseif ($value instanceof SqlLiteral) {
+            $this->elements [] = [$type, $value->getLiteral()];
+        } else {
+            $this->elements [] = [
+                $type,
+                str_replace('?', $this->adapter->quoteValue($value),
+                    $statement),
+            ];
         }
-
-        $this->elements [] = [$type, $str];
-
         return $this;
     }
 

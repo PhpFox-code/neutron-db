@@ -20,6 +20,21 @@ interface AdapterInterface
     public function getSlave();
 
     /**
+     * @throws DbException
+     */
+    public function connect();
+
+    /**
+     * @throws ConnectException
+     */
+    public function reconnect();
+
+    /**
+     * Disconnect database
+     */
+    public function disconnect();
+
+    /**
      * @param $value
      *
      * @return mixed
@@ -45,16 +60,9 @@ interface AdapterInterface
      * @param bool   $master
      *
      * @return SqlResultInterface
+     * @throws SqlException
      */
-    public function query($sql, $master = true);
-
-    /**
-     * @param string $sql
-     * @param bool   $master Use master connection
-     *
-     * @return mixed
-     */
-    public function exec($sql, $master = true);
+    public function execute($sql, $master = true);
 
     /**
      * @return int
@@ -94,32 +102,31 @@ interface AdapterInterface
      *
      * @return string
      */
-    public function getErrorMessage($master = true);
+    public function error($master = true);
 
     /**
-     * @param bool|true $master
+     * Start a new transaction
      *
-     * @return mixed
-     */
-    public function getErrorCode($master = true);
-
-    /**
-     * @return mixed
+     * @return $this
      */
     public function begin();
 
     /**
-     * commit transaction
+     * commit current transaction
+     *
+     * @return $this
      */
     public function commit();
 
     /**
-     * roll back
+     * roll back current transaction
+     *
+     * @return $this
      */
     public function rollback();
 
     /**
-     * @return true
+     * @return bool
      */
     public function inTransaction();
 
