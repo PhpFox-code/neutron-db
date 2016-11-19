@@ -147,7 +147,7 @@ class SqlSelect
     public function select($columns)
     {
         $this->_columns = [];
-        
+
         if (is_string($columns)) {
             $this->_columns [] = $columns;
         } else {
@@ -423,6 +423,7 @@ class SqlSelect
      * @param null $sql
      *
      * @return SqlResultInterface
+     * @throws SqlException
      */
     public function execute($sql = null)
     {

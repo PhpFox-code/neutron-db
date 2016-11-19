@@ -105,7 +105,7 @@ class SqlInsert
     /**
      * @param null $sql
      *
-     * @return mixed
+     * @return SqlResultInterface
      * @throws SqlException
      */
     public function execute($sql = null)

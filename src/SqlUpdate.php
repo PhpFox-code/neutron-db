@@ -100,8 +100,8 @@ class SqlUpdate
     /**
      * @param null $sql
      *
-     * @return mixed
-     * @throws DbException
+     * @return SqlResultInterface
+     * @throws SqlException
      */
     public function execute($sql = null)
     {
