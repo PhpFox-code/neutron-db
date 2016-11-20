@@ -9,6 +9,5 @@ namespace Phpfox\Db;
  */
 interface SqlResultInterface
 {
-
-
+    public function fetch();
 }

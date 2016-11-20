@@ -118,8 +118,8 @@ class SqlInsert
         $result = $this->adapter->execute($sql, true);
 
         if (false === $result) {
-            throw new SqlException($this->adapter->error(true)
-                . PHP_EOL . $sql);
+            throw new SqlException($this->adapter->error(true) . PHP_EOL
+                . $sql);
         }
 
         return $result;
