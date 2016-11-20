@@ -21,9 +21,10 @@ class AdapterFactory
             $key = 'default';
         }
 
-        $db = config('db');
-        $adapter = $db['adapters'][$key];
-        $constructor = $db['drivers'][$adapter['driver']];
+        $adapters = config('db.adapters');
+        $drivers = config('db.drivers');
+        $adapter = $adapters[$key];
+        $constructor = $drivers[$adapter['driver']];
         return new $constructor($adapter);
     }
 }
