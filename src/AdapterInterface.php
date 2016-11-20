@@ -72,7 +72,7 @@ interface AdapterInterface
     /**
      * @return SqlSelect
      */
-    public function select();
+    public function sqlSelect();
 
     /**
      * @param $table
@@ -80,7 +80,7 @@ interface AdapterInterface
      *
      * @return SqlInsert
      */
-    public function insert($table, $data);
+    public function sqlInsert($table, $data);
 
     /**
      * @param $table
@@ -88,14 +88,14 @@ interface AdapterInterface
      *
      * @return SqlUpdate
      */
-    public function update($table, $data);
+    public function sqlUpdate($table, $data);
 
     /**
      * @param string $table
      *
      * @return SqlDelete
      */
-    public function delete($table);
+    public function sqlDelete($table);
 
     /**
      * @param bool|true $master Use master connection

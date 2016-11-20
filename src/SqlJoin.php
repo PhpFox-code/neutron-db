@@ -43,7 +43,7 @@ class SqlJoin
     {
 
         if (is_string($table) && substr($table, 0, 1) == ':') {
-            $table = \app()->db()->getPrefix() . substr($table, 1);
+            $table = PHPFOX_TABLE_PREFIX . substr($table, 1);
         }
 
         $condition = null;

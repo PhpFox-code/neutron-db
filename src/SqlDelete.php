@@ -41,6 +41,10 @@ class SqlDelete
      */
     public function from($table)
     {
+        if (is_string($table) && substr($table, 0, 1) == ':') {
+            $table = PHPFOX_TABLE_PREFIX . substr($table, 1);
+        }
+
         $this->table = $table;
 
         return $this;

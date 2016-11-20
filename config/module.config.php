@@ -2,4 +2,10 @@
 
 namespace Phpfox\Db;
 
-return [];
+return [
+    'services' => [
+        'map' => [
+            'db' => [AdapterFactory::class, null, 'default'],
+        ],
+    ],
+];

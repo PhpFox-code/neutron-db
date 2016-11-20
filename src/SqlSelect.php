@@ -126,6 +126,10 @@ class SqlSelect
      */
     public function from($table, $alias = null, $columns = null)
     {
+        if (is_string($table) && substr($table, 0, 1) == ':') {
+            $table = PHPFOX_TABLE_PREFIX . substr($table, 1);
+        }
+
         if (is_null($alias)) {
             $this->_tables[] = $table;
         } else {

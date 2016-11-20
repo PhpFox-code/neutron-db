@@ -42,13 +42,17 @@ class SqlUpdate
     }
 
     /**
-     * @param string $tableName
+     * @param string $table
      *
      * @return $this
      */
-    public function update($tableName)
+    public function update($table)
     {
-        $this->table = $tableName;
+        if (is_string($table) && substr($table, 0, 1) == ':') {
+            $table = PHPFOX_TABLE_PREFIX . substr($table, 1);
+        }
+
+        $this->table = $table;
         return $this;
     }
 

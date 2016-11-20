@@ -42,14 +42,18 @@ class SqlInsert
     }
 
     /**
-     * @param      $tableName
-     * @param null $data
+     * @param string $table
+     * @param null   $data
      *
      * @return $this
      */
-    public function insert($tableName, $data = null)
+    public function insert($table, $data = null)
     {
-        $this->table = (string)$tableName;
+        if (is_string($table) && substr($table, 0, 1) == ':') {
+            $table = PHPFOX_TABLE_PREFIX . substr($table, 1);
+        }
+
+        $this->table = (string)$table;
 
         if (!empty($data)) {
             $this->data = $data;

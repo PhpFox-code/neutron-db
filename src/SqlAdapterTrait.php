@@ -4,28 +4,23 @@ namespace Phpfox\Db;
 
 Trait SqlAdapterTrait
 {
-    public function insert($table, $data)
+    public function sqlInsert($table, $data)
     {
         return (new SqlInsert($this))->insert($table, $data);
     }
 
-    public function select()
+    public function sqlSelect()
     {
         return new SqlSelect($this);
     }
 
-    public function update($table, $data)
+    public function sqlUpdate($table, $data)
     {
-        return (new SqlUpdate($this))->update($table, $data);
+        return (new SqlUpdate($this))->update($table)->values($data);
     }
 
-    public function delete($table)
+    public function sqlDelete($table)
     {
         return (new SqlDelete($this))->from($table);
-    }
-
-    public function insertDelay($table, $data)
-    {
-        return (new SqlInsert($this))->insert($table, $data)->setDelay(true);
     }
 }
