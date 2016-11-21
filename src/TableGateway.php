@@ -3,7 +3,9 @@
 namespace Phpfox\Db;
 
 
-class TableGateway
+use Phpfox\Model\GatewayInterface;
+
+class TableGateway implements GatewayInterface
 {
     /**
      * @var string
@@ -28,20 +30,40 @@ class TableGateway
     /**
      * @var string
      */
-    protected $name = '';
+    protected $table = '';
 
     /**
      * @var string
      */
-    protected $class = '\Kendo\Model';
+    protected $modelClass = 'StdClass';
+
+    /**
+     * @var string
+     */
+    protected $adapter = 'db';
 
     /**
      * @var array
      */
     protected $defaultValue = [];
 
-    public function __construct()
-    {
+    public function __construct(
+        $collection,
+        $modelClass,
+        $gatewayId,
+        $adapter
+    ) {
+        if (substr($collection, 0, 1) == ':') {
+            $collection = PHPFOX_TABLE_PREFIX . substr($collection, 1);
+        }
+
+        if (null != $adapter) {
+            $adapter = 'db';
+        }
+
+        $this->modelClass = $modelClass;
+        $this->adapter = $adapter;
+        $this->table = $collection;
     }
 
     /**
@@ -59,7 +81,7 @@ class TableGateway
      */
     public function insert($data)
     {
-        return (new SqlInsert($this->_adapter()))->insert($this->getName(),
+        return (new SqlInsert($this->_adapter()))->insert($this->getTable(),
             array_intersect_key($data, $this->getColumn()))->execute();
     }
 
@@ -68,15 +90,15 @@ class TableGateway
      */
     public function _adapter()
     {
-        return \app()->db()->getAdapter($this->getDriver());
+        return service('db');
     }
 
     /**
      * @return string
      */
-    public function getName()
+    public function getTable()
     {
-        return \app()->db()->getName($this->name);
+        return $this->table;
     }
 
     /**
@@ -94,7 +116,7 @@ class TableGateway
      */
     public function insertIgnore($data)
     {
-        $sql = (new SqlInsert($this->_adapter()))->insert($this->getName(),
+        $sql = (new SqlInsert($this->_adapter()))->insert($this->getTable(),
             array_intersect_key($data, $this->getColumn()))
             ->ignoreOnDuplicate(true);
 
@@ -160,7 +182,7 @@ class TableGateway
 
         $query = new SqlUpdate($this->_adapter());
 
-        $query->update($this->getName(), $values);
+        $query->update($this->getTable())->values($values);
 
         foreach ($this->getPrimary() as $column => $type) {
             $query->where("$column=?", $data[$column]);
@@ -184,8 +206,8 @@ class TableGateway
      */
     public function update($values)
     {
-        return (new SqlUpdate($this->_adapter()))->update($this->getName(),
-            $values);
+        return (new SqlUpdate($this->_adapter()))->update($this->getTable())
+            ->values($values);
     }
 
     /**
@@ -195,7 +217,7 @@ class TableGateway
      */
     public function create($data = null)
     {
-        return (new ($this->class)($data, false));
+        return (new ($this->modelClass)($data, false));
     }
 
     /**
@@ -209,24 +231,8 @@ class TableGateway
             $alias = 't1';
         }
 
-        return (new SqlSelect($this->_adapter()))->setModel($this->class)
-            ->from($this->getName(), $alias);
-    }
-
-    /**
-     * @param  array $data
-     *
-     * @return bool
-     */
-    public function deleteByModelData($data)
-    {
-        $sql = $this->delete();
-
-        foreach ($this->getPrimary() as $column => $type) {
-            $sql->where("$column=?", $data[$column]);
-        }
-
-        return $sql->execute();
+        return (new SqlSelect($this->_adapter()))->setModel($this->modelClass)
+            ->from($this->getTable(), $alias);
     }
 
     /**
@@ -234,6 +240,11 @@ class TableGateway
      */
     public function delete()
     {
-        return (new SqlDelete($this->_adapter()))->from($this->getName());
+        return (new SqlDelete($this->_adapter()))->from($this->getTable());
+    }
+
+    public function findById($id)
+    {
+        throw new \Exception("Can not use '{$this->table}' using findById()");
     }
 }
