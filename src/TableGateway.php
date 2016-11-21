@@ -3,45 +3,63 @@
 namespace Phpfox\Db;
 
 
-class TableGateway
+use Phpfox\Model\GatewayException;
+use Phpfox\Model\GatewayInterface;
+
+class TableGateway implements GatewayInterface
 {
     /**
      * @var string
      */
-    protected $identity = '';
+    protected $_identity = '';
 
     /**
      * @var array
      */
-    protected $column = [];
-
-    /**
-     * @var null
-     */
-    protected $driver = null;
+    protected $_columns = [];
 
     /**
      * @var array
      */
-    protected $primary = [];
+    protected $_primary = [];
 
     /**
      * @var string
      */
-    protected $name = '';
+    protected $_table;
 
     /**
      * @var string
      */
-    protected $class = '\Kendo\Model';
+    protected $_modelClass;
 
     /**
      * @var array
      */
-    protected $defaultValue = [];
+    protected $_defaults = [];
 
-    public function __construct()
-    {
+    protected $_adapter;
+
+    protected $_gatewayId;
+
+    public function __construct(
+        $collection,
+        $modelClass,
+        $gatewayId,
+        $adapter
+    ) {
+        if (substr($collection, 0, 1) == ':') {
+            $collection = PHPFOX_TABLE_PREFIX . substr($collection, 1);
+        }
+
+        if (null == $adapter) {
+            $adapter = 'db';
+        }
+
+        $this->_table = $collection;
+        $this->_modelClass = $modelClass;
+        $this->_adapter = $adapter;
+        $this->_gatewayId = $gatewayId;
     }
 
     /**
@@ -49,7 +67,7 @@ class TableGateway
      */
     public function getIdentity()
     {
-        return $this->identity;
+        return $this->_identity;
     }
 
     /**
@@ -59,32 +77,35 @@ class TableGateway
      */
     public function insert($data)
     {
-        return (new SqlInsert($this->_adapter()))->insert($this->getName(),
-            array_intersect_key($data, $this->getColumn()))->execute();
+
+        return (new SqlInsert($this->adapter()))
+            ->insert($this->getTable(),
+            array_intersect_key($data, $this->getColumns()))
+            ->execute();
     }
 
     /**
      * @return AdapterInterface
      */
-    public function _adapter()
+    public function adapter()
     {
-        return \app()->db()->getAdapter($this->getDriver());
+        return service($this->_adapter);
     }
 
     /**
      * @return string
      */
-    public function getName()
+    public function getTable()
     {
-        return \app()->db()->getName($this->name);
+        return $this->_table;
     }
 
     /**
      * @return array
      */
-    public function getColumn()
+    public function getColumns()
     {
-        return $this->column;
+        return $this->_columns;
     }
 
     /**
@@ -94,8 +115,8 @@ class TableGateway
      */
     public function insertIgnore($data)
     {
-        $sql = (new SqlInsert($this->_adapter()))->insert($this->getName(),
-            array_intersect_key($data, $this->getColumn()))
+        $sql = (new SqlInsert($this->adapter()))->insert($this->getTable(),
+            array_intersect_key($data, $this->getColumns()))
             ->ignoreOnDuplicate(true);
 
         return $sql->execute();
@@ -106,7 +127,7 @@ class TableGateway
      */
     public function getDefault()
     {
-        return $this->defaultValue;
+        return $this->_defaults;
     }
 
     /**
@@ -137,7 +158,7 @@ class TableGateway
      */
     public function getPrimary()
     {
-        return $this->primary;
+        return $this->_primary;
     }
 
     /**
@@ -158,9 +179,9 @@ class TableGateway
             return true;
         }
 
-        $query = new SqlUpdate($this->_adapter());
+        $query = new SqlUpdate($this->adapter());
 
-        $query->update($this->getName(), $values);
+        $query->update($this->getTable())->values($values);
 
         foreach ($this->getPrimary() as $column => $type) {
             $query->where("$column=?", $data[$column]);
@@ -174,7 +195,7 @@ class TableGateway
      */
     public function getColumnNotPrimary()
     {
-        return array_diff_key($this->column, $this->primary);
+        return array_diff_key($this->_columns, $this->_primary);
     }
 
     /**
@@ -184,8 +205,8 @@ class TableGateway
      */
     public function update($values)
     {
-        return (new SqlUpdate($this->_adapter()))->update($this->getName(),
-            $values);
+        return (new SqlUpdate($this->adapter()))->update($this->getTable())
+            ->values($values);
     }
 
     /**
@@ -195,7 +216,7 @@ class TableGateway
      */
     public function create($data = null)
     {
-        return (new ($this->class)($data, false));
+        return new $this->_modelClass($data, false);
     }
 
     /**
@@ -209,18 +230,18 @@ class TableGateway
             $alias = 't1';
         }
 
-        return (new SqlSelect($this->_adapter()))->setModel($this->class)
-            ->from($this->getName(), $alias);
+        return (new SqlSelect($this->adapter()))->setModel($this->_modelClass)
+            ->from($this->getTable(), $alias);
     }
 
     /**
      * @param  array $data
      *
-     * @return bool
+     * @return mixed
      */
     public function deleteByModelData($data)
     {
-        $sql = $this->delete();
+        $sql = $this->sqlDelete();
 
         foreach ($this->getPrimary() as $column => $type) {
             $sql->where("$column=?", $data[$column]);
@@ -232,8 +253,13 @@ class TableGateway
     /**
      * @return SqlDelete
      */
-    public function delete()
+    public function sqlDelete()
     {
-        return (new SqlDelete($this->_adapter()))->from($this->getName());
+        return (new SqlDelete($this->adapter()))->from($this->getTable());
+    }
+
+    public function findById($id)
+    {
+        throw new GatewayException("Can not use findById");
     }
 }
