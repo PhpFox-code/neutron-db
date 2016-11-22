@@ -78,10 +78,8 @@ class TableGateway implements GatewayInterface
     public function insert($data)
     {
 
-        return (new SqlInsert($this->adapter()))
-            ->insert($this->getTable(),
-            array_intersect_key($data, $this->getColumns()))
-            ->execute();
+        return (new SqlInsert($this->adapter()))->insert($this->getTable(),
+            array_intersect_key($data, $this->getColumns()))->execute();
     }
 
     /**
@@ -220,18 +218,12 @@ class TableGateway implements GatewayInterface
     }
 
     /**
-     * @param string $alias
      *
      * @return SqlSelect
      */
-    public function select($alias = null)
+    public function sqlSelect()
     {
-        if (null == $alias) {
-            $alias = 't1';
-        }
-
-        return (new SqlSelect($this->adapter()))->setModel($this->_modelClass)
-            ->from($this->getTable(), $alias);
+        return (new SqlSelect($this->adapter()))->from($this->getTable());
     }
 
     /**
