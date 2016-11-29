@@ -1,5 +1,5 @@
 <?php
-namespace Phpfox\Db;
+namespace Neutron\Db;
 
 
 Trait SqlAdapterTrait

@@ -1,6 +1,6 @@
 <?php
 
-namespace Phpfox\Db;
+namespace Neutron\Db;
 
 use PHPUnit_Framework_TestCase;
 

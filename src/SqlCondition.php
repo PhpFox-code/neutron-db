@@ -1,11 +1,11 @@
 <?php
 
-namespace Phpfox\Db;
+namespace Neutron\Db;
 
 /**
  * Class SqlCondition
  *
- * @package Phpfox\Db
+ * @package Neutron\Db
  */
 class SqlCondition
 {

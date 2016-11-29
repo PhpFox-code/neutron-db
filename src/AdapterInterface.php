@@ -1,11 +1,11 @@
 <?php
 
-namespace Phpfox\Db;
+namespace Neutron\Db;
 
 /**
  * Interface AdapterInterface
  *
- * @package Phpfox\Db
+ * @package Neutron\Db
  */
 interface AdapterInterface
 {

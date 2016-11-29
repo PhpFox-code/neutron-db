@@ -1,5 +1,5 @@
 <?php
-namespace Phpfox\Db;
+namespace Neutron\Db;
 
 
 class ConnectException extends \Exception

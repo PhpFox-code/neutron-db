@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Phpfox\Db;
+namespace Neutron\Db;
 
 /**
  * Class SqlUpdate
  *
- * @package Phpfox\Db
+ * @package Neutron\Db
  */
 class SqlUpdate
 {

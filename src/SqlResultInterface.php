@@ -1,11 +1,11 @@
 <?php
 
-namespace Phpfox\Db;
+namespace Neutron\Db;
 
 /**
  * Interface QueryResult
  *
- * @package Phpfox\Db
+ * @package Neutron\Db
  */
 interface SqlResultInterface
 {

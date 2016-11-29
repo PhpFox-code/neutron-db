@@ -1,10 +1,10 @@
 <?php
-namespace Phpfox\Db;
+namespace Neutron\Db;
 
 /**
  * Class SqlLiteral
  *
- * @package Phpfox\Db
+ * @package Neutron\Db
  */
 class SqlLiteral
 {

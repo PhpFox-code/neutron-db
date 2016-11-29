@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Phpfox\Db;
+namespace Neutron\Db;
 
 /**
  * Class DbException
  *
- * @package Phpfox\Db
+ * @package Neutron\Db
  */
 class DbException extends \RuntimeException
 {

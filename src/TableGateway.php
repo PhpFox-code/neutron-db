@@ -1,10 +1,10 @@
 <?php
 
-namespace Phpfox\Db;
+namespace Neutron\Db;
 
 
-use Phpfox\Model\GatewayException;
-use Phpfox\Model\GatewayInterface;
+use Neutron\Model\GatewayException;
+use Neutron\Model\GatewayInterface;
 
 class TableGateway implements GatewayInterface
 {
