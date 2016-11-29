@@ -1,5 +1,5 @@
 {
-  "name": "codelego/phpfox-db",
+  "name": "codelego/neutron-db",
   "description": "Database library for phpfox framework.",
   "type": "library",
   "license": "MIT",
